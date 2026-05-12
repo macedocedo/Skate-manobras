@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprenda Andar de Skate — Mateus Macedo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #E85D04;
+    --orange-dark: #C44D00;
+    --orange-light: #FF7A25;
+    --black: #080808;
+    --dark: #0f0f0f;
+    --card: #141414;
+    --card2: #1a1a1a;
+    --border: #222;
+    --border2: #2e2e2e;
+    --text: #F0EDE8;
+    --muted: #888;
+    --muted2: #555;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  body { cursor: none; }
+  #cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--orange); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform .1s, width .2s, height .2s;
+    mix-blend-mode: exclusion;
+  }
+  body:has(a:hover) #cursor,
+  body:has(button:hover) #cursor { width: 28px; height: 28px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem;
+    border-bottom: 1px solid transparent;
+    transition: all .3s;
+  }
+  nav.scrolled {
+    background: rgba(8,8,8,.92);
+    backdrop-filter: blur(12px);
+    border-bottom-color: var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 2px;
+    color: var(--text); text-decoration: none;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    text-decoration: none; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange); color: #fff !important;
+    padding: 7px 18px; border-radius: 3px;
+  }
+  .nav-cta:hover { background: var(--orange-dark) !important; color: #fff !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 8rem 2.5rem 4rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(232,93,4,.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(232,93,4,.04) 0%, transparent 60%);
+  }
+  .hero-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(232,93,4,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,93,4,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,93,4,.12); border: 1px solid rgba(232,93,4,.3);
+    color: var(--orange); padding: 6px 16px; border-radius: 2px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8.5rem);
+    line-height: .9; letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .line-orange { color: var(--orange); display: block; }
+  .hero h1 .line-small {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 400; letter-spacing: 6px;
+    color: var(--muted); display: block; margin: .5rem 0;
+    text-transform: uppercase;
+  }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--muted); max-width: 480px;
+    line-height: 1.7; margin-bottom: 2.5rem;
+    font-style: italic;
+  }
+  .hero-sub strong { color: var(--orange); font-style: normal; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 800; letter-spacing: 2px;
+    text-transform: uppercase; padding: 14px 32px;
+    border: none; border-radius: 3px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all .2s; position: relative; overflow: hidden;
+  }
+  .btn-primary::after { content: '›'; margin-left: 8px; font-size: 18px; }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+  .btn-ghost {
+    color: var(--text); border: 1px solid var(--border2);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; padding: 14px 28px;
+    background: transparent; border-radius: 3px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all .2s;
+  }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+  .hero-stats {
+    position: absolute; right: 2.5rem; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 2rem;
+  }
+  .stat { text-align: right; }
+  .stat .n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem; color: var(--orange); line-height: 1;
+  }
+  .stat .l {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .stat-divider { width: 1px; height: 40px; background: var(--border); margin-left: auto; }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 6rem 2.5rem; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: .75rem; display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--orange); }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 2px; line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .section-sub { color: var(--muted); max-width: 520px; line-height: 1.7; }
+
+  /* ── NÍVEIS ── */
+  #niveis { background: var(--dark); }
+  .levels-intro { max-width: 700px; margin: 0 auto 4rem; text-align: center; }
+  .levels-intro .section-label { justify-content: center; }
+  .levels-intro .section-label::before { display: none; }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+    max-width: 1000px; margin: 0 auto;
+  }
+  .level-card {
+    background: var(--card); padding: 2.5rem 2rem;
+    transition: background .2s;
+    position: relative; overflow: hidden;
+  }
+  .level-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .level-card.green::before { background: #4CAF50; }
+  .level-card.yellow::before { background: #FFC107; }
+  .level-card.red::before { background: #F44336; }
+  .level-card:hover { background: var(--card2); }
+  .level-icon {
+    font-size: 2.5rem; margin-bottom: 1rem; display: block; line-height: 1;
+  }
+  .level-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; letter-spacing: 2px; margin-bottom: .4rem;
+  }
+  .level-card.green .level-name { color: #4CAF50; }
+  .level-card.yellow .level-name { color: #FFC107; }
+  .level-card.red .level-name { color: #F44336; }
+  .level-desc { color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 1.5rem; }
+  .level-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted2);
+    border-top: 1px solid var(--border2); padding-top: 1rem;
+  }
+
+  /* ── MANOBRAS ── */
+  #manobras { padding: 6rem 2.5rem; }
+  .manobras-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;
+  }
+  .filter-tabs { display: flex; gap: 6px; }
+  .filter-btn {
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--muted); padding: 8px 9px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; border-radius: 3px; cursor: pointer;
+    transition: all .2s;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+  .manobras-categories { display: flex; flex-direction: column; gap: 3rem; }
+  .category { display: none; }
+  .category.visible { display: block; }
+
+  .category-header {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .category-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .category-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .category-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .moves-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+  .move-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 5px; padding: 12px 14px;
+    cursor: default; transition: all .2s;
+    position: relative; overflow: hidden;
+  }
+  .move-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 2px;
+    transition: width .2s;
+  }
+  .move-card:hover { transform: translateY(-2px); border-color: #333; }
+  .move-card:hover::before { width: 4px; }
+  .move-card.g::before { background: #4CAF50; }
+  .move-card.y::before { background: #FFC107; }
+  .move-card.r::before { background: #F44336; }
+  .move-name {
+    font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2;
+  }
+  .move-tip { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* ── PROGRESSÃO ── */
+  #progressao { background: var(--dark); }
+  .prog-wrap { max-width: 800px; margin: 0 auto; }
+  .prog-steps { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+  .prog-step {
+    display: flex; gap: 2rem; align-items: flex-start;
+    padding: 2rem 0; border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .prog-step:last-child { border-bottom: none; }
+  .prog-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem; color: var(--border2); line-height: 1;
+    min-width: 70px; transition: color .3s;
+  }
+  .prog-step:hover .prog-num { color: var(--orange); }
+  .prog-content { flex: 1; padding-top: .5rem; }
+  .prog-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: .4rem;
+  }
+  .prog-step-desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .prog-tag {
+    display: inline-block; margin-top: .75rem;
+    background: rgba(232,93,4,.1); border: 1px solid rgba(232,93,4,.2);
+    color: var(--orange); font-size: 11px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 2px;
+  }
+
+  /* ── CONTATO ── */
+  #contato {
+    background: var(--black);
+    text-align: center; padding: 6rem 2.5rem;
+  }
+  .contato-wrap { max-width: 600px; margin: 0 auto; }
+  .contato-wrap .section-label { justify-content: center; }
+  .contato-wrap .section-label::before { display: none; }
+  .contato-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2.5rem; }
+  .contato-link {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1px solid var(--border2);
+    padding: 14px 24px; border-radius: 5px;
+    color: var(--text); text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 15px; letter-spacing: 1px;
+    transition: all .2s;
+  }
+  .contato-link:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-2px); }
+  .contato-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .contato-icon.wa { background: #25D366; }
+  .contato-icon.ig { background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+  .contato-icon svg { width: 16px; height: 16px; fill: #fff; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; letter-spacing: 2px; color: var(--muted);
+  }
+  .footer-logo span { color: var(--orange); }
+  .footer-copy { font-size: 12px; color: var(--muted2); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.25rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.25rem; }
+    .hero { padding: 7rem 1.25rem 4rem; }
+    .hero-stats { display: none; }
+    .hero h1 { font-size: clamp(3rem, 15vw, 5rem); }
+    .manobras-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">Skate<span>.</span>Macedo</a>
+  <ul class="nav-links">
+    <li><a href="#niveis">Níveis</a></li>
+    <li><a href="#manobras">Manobras</a></li>
+    <li><a href="#progressao">Progressão</a></li>
+    <li><a href="#contato" class="nav-cta">Inscreva-se</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Aprenda com Segurança</div>
+    <h1>
+      Aprenda
+      <span class="line-orange">Andar de<br>Skate</span>
+      <span class="line-small">com Mateus Macedo</span>
+    </h1>
+    <p class="hero-sub">
+      <strong>Transforme equilíbrio em liberdade.</strong><br>
+      Do primeiro impulso até as manobras mais técnicas — um método completo para iniciantes e avançados.
+    </p>
+    <div class="hero-actions">
+      <a href="#contato" class="btn-primary">Inscreva-se Agora</a>
+      <a href="#manobras" class="btn-ghost">Ver Manobras</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="n">52</div>
+      <div class="l">Manobras</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="n">3</div>
+      <div class="l">Níveis</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="n">∞</div>
+      <div class="l">Evolução</div>
+    </div>
+  </div>
+</section>
+
+<!-- NÍVEIS -->
+<section id="niveis">
+  <div class="levels-intro reveal">
+    <div class="section-label">Estrutura do Curso</div>
+    <h2 class="section-title">Três Níveis<br>de Evolução</h2>
+    <p class="section-sub">Do equilíbrio básico às manobras mais técnicas, cada fase foi desenhada para construir confiança e habilidade de forma progressiva.</p>
+  </div>
+  <div class="levels-grid reveal">
+    <div class="level-card green">
+      <span class="level-icon">🟢</span>
+      <div class="level-name">Iniciante</div>
+      <p class="level-desc">Base sólida no skate: postura, equilíbrio, impulso e as primeiras manobras. O começo certo de tudo.</p>
+      <div class="level-count">13 manobras · Equilíbrio & Controle</div>
+    </div>
+    <div class="level-card yellow">
+      <span class="level-icon">🟡</span>
+      <div class="level-name">Intermediário</div>
+      <p class="level-desc">Ollie, giros, slides e grinds. A fase onde o skate começa a virar expressão e não só locomoção.</p>
+      <div class="level-count">17 manobras · Flat & Bordas & Rampas</div>
+    </div>
+    <div class="level-card red">
+      <span class="level-icon">🔴</span>
+      <div class="level-name">Avançado</div>
+      <p class="level-desc">Flip tricks, grinds técnicos, manobras verticais e o domínio completo do skate como linguagem.</p>
+      <div class="level-count">22 manobras · Técnico & Vertical</div>
+    </div>
+  </div>
+</section>
+
+<!-- MANOBRAS -->
+<section id="manobras">
+  <div class="manobras-header">
+    <div class="reveal">
+      <div class="section-label">Lista Completa</div>
+      <h2 class="section-title">Todas as<br>Manobras</h2>
+    </div>
+    <div class="filter-tabs reveal">
+      <button class="filter-btn active" onclick="filterMoves('all',this)">Todas</button>
+      <button class="filter-btn" onclick="filterMoves('init',this)">Iniciante</button>
+      <button class="filter-btn" onclick="filterMoves('int',this)">Intermediário</button>
+      <button class="filter-btn" onclick="filterMoves('adv',this)">Avançado</button>
+    </div>
+  </div>
+  <div class="manobras-categories">
+
+    <!-- INICIANTE -->
+    <div class="category reveal" data-level="init">
+      <div class="category-header">
+        <div class="category-dot" style="background:#4CAF50"></div>
+        <div class="category-title">Iniciante — Equilíbrio e Controle</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card g"><div class="move-name">Base no Skate</div><div class="move-tip">Regular ou Goofy</div></div>
+        <div class="move-card g"><div class="move-name">Impulso Correto</div><div class="move-tip">Técnica de push</div></div>
+        <div class="move-card g"><div class="move-name">Curvas Básicas</div><div class="move-tip">Peso e direção</div></div>
+        <div class="move-card g"><div class="move-name">Freio com o Pé</div><div class="move-tip">Controle de velocidade</div></div>
+        <div class="move-card g"><div class="move-name">Drop Simples</div><div class="move-tip">Descer obstáculos</div></div>
+        <div class="move-card g"><div class="move-name">Manual Básico</div><div class="move-tip">Equilíbrio nas rodas</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="init">
+      <div class="category-header">
+        <div class="category-dot" style="background:#4CAF50"></div>
+        <div class="category-title">Iniciante — Primeiras Manobras</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card g"><div class="move-name">Tic Tac</div><div class="move-tip">Ziguezague básico</div></div>
+        <div class="move-card g"><div class="move-name">Kick Turn</div><div class="move-tip">Virada no ar</div></div>
+        <div class="move-card g"><div class="move-name">Caveman</div><div class="move-tip">Jump no board</div></div>
+        <div class="move-card g"><div class="move-name">Fakie Ride</div><div class="move-tip">Andar de costas</div></div>
+        <div class="move-card g"><div class="move-name">Hippie Jump</div><div class="move-tip">Pular o board</div></div>
+      </div>
+    </div>
+
+    <!-- INTERMEDIÁRIO -->
+    <div class="category reveal" data-level="int">
+      <div class="category-header">
+        <div class="category-dot" style="background:#FFC107"></div>
+        <div class="category-title">Intermediário — Manobras Flat</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card y"><div class="move-name">Ollie</div><div class="move-tip">Base de tudo</div></div>
+        <div class="move-card y"><div class="move-name">Nollie</div><div class="move-tip">Ollie pelo nose</div></div>
+        <div class="move-card y"><div class="move-name">Pop Shove-it</div><div class="move-tip">Giro 180° do board</div></div>
+        <div class="move-card y"><div class="move-name">Frontside 180</div><div class="move-tip">Corpo + board</div></div>
+        <div class="move-card y"><div class="move-name">Backside 180</div><div class="move-tip">Corpo + board</div></div>
+        <div class="move-card y"><div class="move-name">Manual</div><div class="move-tip">Rodas traseiras</div></div>
+        <div class="move-card y"><div class="move-name">Nose Manual</div><div class="move-tip">Rodas dianteiras</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="int">
+      <div class="category-header">
+        <div class="category-dot" style="background:#FFC107"></div>
+        <div class="category-title">Intermediário — Bordas e Corrimão</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card y"><div class="move-name">50-50 Grind</div><div class="move-tip">Dois trucks</div></div>
+        <div class="move-card y"><div class="move-name">Boardslide</div><div class="move-tip">Board perpendicular</div></div>
+        <div class="move-card y"><div class="move-name">Nose Slide</div><div class="move-tip">Truck dianteiro</div></div>
+        <div class="move-card y"><div class="move-name">Tail Slide</div><div class="move-tip">Truck traseiro</div></div>
+        <div class="move-card y"><div class="move-name">Lip Slide</div><div class="move-tip">Slide de lip</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="int">
+      <div class="category-header">
+        <div class="category-dot" style="background:#FFC107"></div>
+        <div class="category-title">Intermediário — Transição / Rampas</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card y"><div class="move-name">Rock to Fakie</div><div class="move-tip">Balancear na lip</div></div>
+        <div class="move-card y"><div class="move-name">Axle Stall</div><div class="move-tip">Parar nos trucks</div></div>
+        <div class="move-card y"><div class="move-name">Drop In</div><div class="move-tip">Entrar na rampa</div></div>
+        <div class="move-card y"><div class="move-name">Tail Stall</div><div class="move-tip">Stall no tail</div></div>
+      </div>
+    </div>
+
+    <!-- AVANÇADO -->
+    <div class="category reveal" data-level="adv">
+      <div class="category-header">
+        <div class="category-dot" style="background:#F44336"></div>
+        <div class="category-title">Avançado — Flip Tricks</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card r"><div class="move-name">Kickflip</div><div class="move-tip">Flip clássico</div></div>
+        <div class="move-card r"><div class="move-name">Heelflip</div><div class="move-tip">Flip invertido</div></div>
+        <div class="move-card r"><div class="move-name">Varial Flip</div><div class="move-tip">Shove + kickflip</div></div>
+        <div class="move-card r"><div class="move-name">Fakie Flip</div><div class="move-tip">Kickflip de fakie</div></div>
+        <div class="move-card r"><div class="move-name">Fakie 360</div><div class="move-tip">360 de fakie</div></div>
+        <div class="move-card r"><div class="move-name">360 Flip</div><div class="move-tip">Tres flip</div></div>
+        <div class="move-card r"><div class="move-name">180 BS Flip</div><div class="move-tip">Backside + flip</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="adv">
+      <div class="category-header">
+        <div class="category-dot" style="background:#F44336"></div>
+        <div class="category-title">Avançado — Grinds e Slides Avançados</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card r"><div class="move-name">Smith Grind</div><div class="move-tip">Truck + tail</div></div>
+        <div class="move-card r"><div class="move-name">Crooked Grind</div><div class="move-tip">Nose truck grind</div></div>
+        <div class="move-card r"><div class="move-name">Bluntslide</div><div class="move-tip">Tail slide avançado</div></div>
+        <div class="move-card r"><div class="move-name">Noseblunt</div><div class="move-tip">Nose blunt slide</div></div>
+        <div class="move-card r"><div class="move-name">Lipslide</div><div class="move-tip">Slide de lip</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="adv">
+      <div class="category-header">
+        <div class="category-dot" style="background:#F44336"></div>
+        <div class="category-title">Avançado — Manobras Técnicas</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card r"><div class="move-name">Bigspin</div><div class="move-tip">360 + shove-it</div></div>
+        <div class="move-card r"><div class="move-name">Fakie Bigspin</div><div class="move-tip">De fakie</div></div>
+        <div class="move-card r"><div class="move-name">Late Flip</div><div class="move-tip">Flip atrasado</div></div>
+        <div class="move-card r"><div class="move-name">Flip Noflip</div><div class="move-tip">Fake flip trick</div></div>
+      </div>
+    </div>
+
+    <div class="category reveal" data-level="adv">
+      <div class="category-header">
+        <div class="category-dot" style="background:#F44336"></div>
+        <div class="category-title">Avançado — Vertical / Bowl</div>
+      </div>
+      <div class="moves-grid">
+        <div class="move-card r"><div class="move-name">Air</div><div class="move-tip">Aéreo na vert</div></div>
+        <div class="move-card r"><div class="move-name">Smith Stall</div><div class="move-tip">Stall de smith</div></div>
+        <div class="move-card r"><div class="move-name">Disaster</div><div class="move-tip">180 no lip</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROGRESSÃO -->
+<section id="progressao">
+  <div class="prog-wrap">
+    <div class="reveal">
+      <div class="section-label">Dica para Evolução</div>
+      <h2 class="section-title">A Progressão<br>Ideal</h2>
+      <p class="section-sub">Treinar consistência e postura é mais importante do que aprender várias manobras rapidamente.</p>
+    </div>
+    <div class="prog-steps">
+      <div class="prog-step reveal">
+        <div class="prog-num">01</div>
+        <div class="prog-content">
+          <div class="prog-step-title">Equilíbrio e Controle</div>
+          <p class="prog-step-desc">Antes de qualquer manobra, domine a base. Postura correta, impulso, curvas e frenagem são a fundação de tudo. Sem essa base, nada se constrói.</p>
+          <span class="prog-tag">Iniciante</span>
+        </div>
+      </div>
+      <div class="prog-step reveal">
+        <div class="prog-num">02</div>
+        <div class="prog-content">
+          <div class="prog-step-title">O Ollie</div>
+          <p class="prog-step-desc">A manobra mais importante do skate. Todas as outras se constroem em cima dela. Pratique até ser automático — altura, consistência e controle de aterrissagem.</p>
+          <span class="prog-tag">Intermediário</span>
+        </div>
+      </div>
+      <div class="prog-step reveal">
+        <div class="prog-num">03</div>
+        <div class="prog-content">
+          <div class="prog-step-title">Giros Básicos</div>
+          <p class="prog-step-desc">180s frontside e backside, pop shove-it. Aprender a girar o corpo e o board separadamente — e juntos — abre um universo de combinações.</p>
+          <span class="prog-tag">Intermediário</span>
+        </div>
+      </div>
+      <div class="prog-step reveal">
+        <div class="prog-num">04</div>
+        <div class="prog-content">
+          <div class="prog-step-title">Slides e Grinds</div>
+          <p class="prog-step-desc">50-50, boardslide, noseslide. Levar o skate para as bordas e corrimões muda completamente a leitura do ambiente urbano e da pista.</p>
+          <span class="prog-tag">Intermediário</span>
+        </div>
+      </div>
+      <div class="prog-step reveal">
+        <div class="prog-num">05</div>
+        <div class="prog-content">
+          <div class="prog-step-title">Flip Tricks</div>
+          <p class="prog-step-desc">Kickflip, heelflip e suas variações. Quando o board começa a girar no próprio eixo, o skate vira arte. Exige dedicação e muita repetição.</p>
+          <span class="prog-tag">Avançado</span>
+        </div>
+      </div>
+      <div class="prog-step reveal">
+        <div class="prog-num">06</div>
+        <div class="prog-content">
+          <div class="prog-step-title">Manobras Técnicas e Aéreas</div>
+          <p class="prog-step-desc">Bigspins, late flips, verticais, bowl. O nível onde o skate se torna sua linguagem pessoal — cada skatista cria seu próprio estilo.</p>
+          <span class="prog-tag">Avançado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="contato-wrap">
+    <div class="reveal">
+      <div class="section-label">Inscreva-se</div>
+      <h2 class="section-title">Comece Hoje</h2>
+      <p class="section-sub" style="margin:0 auto">Entre em contato para saber horários, valores e disponibilidade. Turmas para iniciantes e avançados.</p>
+    </div>
+    <div class="contato-links reveal">
+      <a href="https://wa.me/5519997676683" class="contato-link" target="_blank">
+        <div class="contato-icon wa">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+        19 99767 6683
+      </a>
+      <a href="https://www.instagram.com/macedocedo_" class="contato-link" target="_blank">
+        <div class="contato-icon ig">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </div>
+        @macedocedo_
+      </a>
+    </div>
+    <div style="margin-top:3rem">
+      <a href="https://wa.me/5519997676683" class="btn-primary" target="_blank" style="font-size:16px;padding:18px 40px">
+        Inscreva-se Agora
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Skate<span>.</span>Macedo</div>
+  <div class="footer-copy">© 2025 Mateus Macedo · Campinas, SP</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), 80);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+
+  // Filter
+  function filterMoves(level, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.category').forEach(cat => {
+      if(level === 'all' || cat.dataset.level === level) {
+        cat.classList.add('visible');
+      } else {
+        cat.classList.remove('visible');
+      }
+    });
+  }
+  // Show all initially
+  document.querySelectorAll('.category').forEach(c => c.classList.add('visible'));
+</script>
+</body>
+</html>
