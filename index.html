@@ -350,6 +350,92 @@
   .footer-logo span { color: var(--orange); }
   .footer-copy { font-size: 12px; color: var(--muted2); }
 
+  /* ── BENEFÍCIOS ── */
+  #beneficios { background: var(--black); }
+  .beneficios-wrap { max-width: 1100px; margin: 0 auto; }
+  .beneficios-intro { max-width: 650px; margin-bottom: 4rem; }
+
+  .beneficios-tabs {
+    display: flex; gap: 8px; margin-bottom: 3rem; flex-wrap: wrap;
+  }
+  .beneficio-tab {
+    background: transparent; border: 1px solid var(--border2);
+    color: var(--muted); padding: 10px 22px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; border-radius: 3px; cursor: pointer;
+    transition: all .2s;
+  }
+  .beneficio-tab.active, .beneficio-tab:hover { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+  .beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .beneficio-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 2rem;
+    transition: all .3s; position: relative; overflow: hidden;
+  }
+  .beneficio-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--orange), var(--orange-light));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s;
+  }
+  .beneficio-card:hover { border-color: rgba(232,93,4,.3); transform: translateY(-4px); }
+  .beneficio-card:hover::after { transform: scaleX(1); }
+
+  .beneficio-icon {
+    font-size: 2.2rem; margin-bottom: 1rem; display: block;
+  }
+  .beneficio-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: .5rem; color: var(--text);
+  }
+  .beneficio-desc {
+    color: var(--muted); font-size: 14px; line-height: 1.7;
+  }
+  .beneficio-tag {
+    display: inline-block; margin-top: 1rem;
+    background: rgba(232,93,4,.1); border: 1px solid rgba(232,93,4,.2);
+    color: var(--orange); font-size: 11px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 2px;
+  }
+
+  .beneficio-card[data-grupo] { display: none; }
+  .beneficio-card.visivel { display: block; }
+
+  .beneficios-destaque {
+    margin-top: 3rem;
+    background: linear-gradient(135deg, rgba(232,93,4,.08), rgba(232,93,4,.03));
+    border: 1px solid rgba(232,93,4,.2);
+    border-radius: 8px; padding: 2.5rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+  .destaques-title {
+    grid-column: 1/-1;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 2px; color: var(--orange);
+    margin-bottom: .5rem;
+  }
+  .destaque-item { display: flex; align-items: flex-start; gap: 12px; }
+  .destaque-check {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: rgba(232,93,4,.15); border: 1px solid rgba(232,93,4,.4);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+    font-size: 12px; color: var(--orange);
+  }
+  .destaque-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .destaque-text strong { color: var(--text); display: block; font-size: 15px; margin-bottom: 3px; }
+
   /* ── SCROLL REVEAL ── */
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s, transform .6s; }
   .reveal.in { opacity: 1; transform: none; }
@@ -377,6 +463,8 @@
     <li><a href="#niveis">Níveis</a></li>
     <li><a href="#manobras">Manobras</a></li>
     <li><a href="#progressao">Progressão</a></li>
+    <li><a href="#beneficios">Benefícios</a></li>
+    <li><a href="area-aluno.html">Aluno</a></li>
     <li><a href="#contato" class="nav-cta">Inscreva-se</a></li>
   </ul>
 </nav>
@@ -550,7 +638,7 @@
         <div class="move-card r"><div class="move-name">Varial Flip</div><div class="move-tip">Shove + kickflip</div></div>
         <div class="move-card r"><div class="move-name">Fakie Flip</div><div class="move-tip">Kickflip de fakie</div></div>
         <div class="move-card r"><div class="move-name">Fakie 360</div><div class="move-tip">360 de fakie</div></div>
-        <div class="move-card r"><div class="move-name">360 Flip</div><div class="move-tip">varial 360 + flip</div></div>
+        <div class="move-card r"><div class="move-name">360 Flip</div><div class="move-tip">Tres flip</div></div>
         <div class="move-card r"><div class="move-name">180 BS Flip</div><div class="move-tip">Backside + flip</div></div>
       </div>
     </div>
@@ -594,7 +682,7 @@
       </div>
     </div>
     <div class="section-sub"> E essas são apenas algumas das manobras!
-Durante as aulas, o aluno também terá contato com diversas outras técnicas e evoluções no skate, tanto no street quanto no vertical, sempre respeitando o nível e a evolução de cada um.</div>
+Durante as aulas, o aluno também terá contato com diversas outras técnicas e evoluções no skate, tanto no street quanto no vertical, sempre respeitando o nível e a evolução de cada um. ⚡</div>
   </div>
 </section>
 
@@ -659,6 +747,156 @@ Durante as aulas, o aluno também terá contato com diversas outras técnicas e 
   </div>
 </section>
 
+<!-- BENEFÍCIOS -->
+<section id="beneficios">
+  <div class="beneficios-wrap">
+    <div class="beneficios-intro reveal">
+      <div class="section-label">Mais do que um esporte</div>
+      <h2 class="section-title">O Skate Transforma<br>Vidas</h2>
+      <p class="section-sub">Andar de skate vai muito além das manobras. É uma prática que desenvolve habilidades essenciais para crianças e adultos — dentro e fora da pista.</p>
+    </div>
+
+    <div class="beneficios-tabs reveal">
+      <button class="beneficio-tab active" onclick="filtrarBeneficios('todos', this)">Todos</button>
+      <button class="beneficio-tab" onclick="filtrarBeneficios('criancas', this)">🧒 Crianças</button>
+      <button class="beneficio-tab" onclick="filtrarBeneficios('adultos', this)">🧑 Adultos</button>
+      <button class="beneficio-tab" onclick="filtrarBeneficios('profissional', this)">💼 Vida Profissional</button>
+      <button class="beneficio-tab" onclick="filtrarBeneficios('pessoal', this)">🌱 Vida Pessoal</button>
+    </div>
+
+    <div class="beneficios-grid">
+
+      <!-- CRIANÇAS -->
+      <div class="beneficio-card visivel reveal" data-grupo="criancas">
+        <span class="beneficio-icon">🧠</span>
+        <div class="beneficio-titulo">Desenvolvimento Motor</div>
+        <p class="beneficio-desc">O skate estimula a coordenação motora, o equilíbrio e a consciência corporal desde cedo. Crianças que praticam desenvolvem reflexos mais rápidos e maior controle do próprio corpo.</p>
+        <span class="beneficio-tag">Crianças</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="criancas">
+        <span class="beneficio-icon">💪</span>
+        <div class="beneficio-titulo">Resiliência e Superação</div>
+        <p class="beneficio-desc">Cair e levantar faz parte do skate. As crianças aprendem desde cedo a lidar com o erro, a persistir diante das dificuldades e a celebrar cada conquista — valores que carregam para a vida.</p>
+        <span class="beneficio-tag">Crianças</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="criancas">
+        <span class="beneficio-icon">🤝</span>
+        <div class="beneficio-titulo">Socialização e Amizades</div>
+        <p class="beneficio-desc">A pista de skate é um ambiente de troca e respeito. Crianças aprendem a conviver com diferentes idades, ajudar uns aos outros e construir amizades verdadeiras baseadas em paixão comum.</p>
+        <span class="beneficio-tag">Crianças</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="criancas">
+        <span class="beneficio-icon">🎯</span>
+        <div class="beneficio-titulo">Foco e Concentração</div>
+        <p class="beneficio-desc">Para aprender uma manobra, é preciso foco total. O skate treina naturalmente a atenção e a disciplina, habilidades que refletem diretamente na escola e nos estudos.</p>
+        <span class="beneficio-tag">Crianças</span>
+      </div>
+
+      <!-- ADULTOS -->
+      <div class="beneficio-card visivel reveal" data-grupo="adultos">
+        <span class="beneficio-icon">🧘</span>
+        <div class="beneficio-titulo">Saúde Mental e Alívio de Estresse</div>
+        <p class="beneficio-desc">O skate exige presença total no momento. Essa atenção plena funciona como uma forma de meditação ativa — afasta a ansiedade, reduz o estresse e libera endorfina de forma consistente.</p>
+        <span class="beneficio-tag">Adultos</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="adultos">
+        <span class="beneficio-icon">🏃</span>
+        <div class="beneficio-titulo">Condicionamento Físico</div>
+        <p class="beneficio-desc">Uma sessão de skate trabalha pernas, core, equilíbrio e resistência cardiovascular. É um treino completo disfarçado de diversão — ideal para adultos que buscam se movimentar sem rotina de academia.</p>
+        <span class="beneficio-tag">Adultos</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="adultos">
+        <span class="beneficio-icon">🔄</span>
+        <div class="beneficio-titulo">Mentalidade de Crescimento</div>
+        <p class="beneficio-desc">O skate reacende no adulto a capacidade de aprender algo novo do zero. Quebrar limitações mentais do "sou velho para isso" gera um impacto transformador na autoconfiança e na visão de mundo.</p>
+        <span class="beneficio-tag">Adultos</span>
+      </div>
+
+      <!-- PROFISSIONAL -->
+      <div class="beneficio-card visivel reveal" data-grupo="profissional">
+        <span class="beneficio-icon">🗣️</span>
+        <div class="beneficio-titulo">Comunicação e Liderança</div>
+        <p class="beneficio-desc">A cultura do skate ensina a ensinar. Quem pratica desenvolve naturalmente a habilidade de explicar, motivar e liderar — competências altamente valorizadas em qualquer área profissional.</p>
+        <span class="beneficio-tag">Vida Profissional</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="profissional">
+        <span class="beneficio-icon">⚡</span>
+        <div class="beneficio-titulo">Gestão de Risco e Tomada de Decisão</div>
+        <p class="beneficio-desc">Cada manobra envolve calcular risco, planejar e executar. Essa habilidade de avaliar cenários e agir com confiança sob pressão é diretamente transferível para decisões profissionais e empreendedorismo.</p>
+        <span class="beneficio-tag">Vida Profissional</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="profissional">
+        <span class="beneficio-icon">🔥</span>
+        <div class="beneficio-titulo">Criatividade e Inovação</div>
+        <p class="beneficio-desc">O skate é uma arte. Criar novas combinações de manobras e encontrar linhas únicas exercita o pensamento criativo e lateral — a mesma mentalidade que diferencia profissionais inovadores no mercado.</p>
+        <span class="beneficio-tag">Vida Profissional</span>
+      </div>
+
+      <!-- PESSOAL -->
+      <div class="beneficio-card visivel reveal" data-grupo="pessoal">
+        <span class="beneficio-icon">🌟</span>
+        <div class="beneficio-titulo">Autoconfiança e Autoestima</div>
+        <p class="beneficio-desc">Cada manobra conquistada é uma prova de que você é capaz de mais do que imagina. Essa confiança construída na pista transborda para todas as áreas da vida pessoal.</p>
+        <span class="beneficio-tag">Vida Pessoal</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="pessoal">
+        <span class="beneficio-icon">🎨</span>
+        <div class="beneficio-titulo">Expressão e Identidade</div>
+        <p class="beneficio-desc">O skate é uma forma de arte pessoal. Cada skatista desenvolve seu próprio estilo, o que fortalece a identidade, a autoexpressão e a autenticidade — qualidades essenciais para relações saudáveis.</p>
+        <span class="beneficio-tag">Vida Pessoal</span>
+      </div>
+
+      <div class="beneficio-card visivel reveal" data-grupo="pessoal">
+        <span class="beneficio-icon">🌍</span>
+        <div class="beneficio-titulo">Comunidade e Pertencimento</div>
+        <p class="beneficio-desc">Entrar para o skate é entrar para uma comunidade global. Independente de onde você for, há uma pista e uma galera pronta para recepcionar. O skate cria laços que vão além do esporte.</p>
+        <span class="beneficio-tag">Vida Pessoal</span>
+      </div>
+
+    </div>
+
+    <div class="beneficios-destaque reveal">
+      <div class="destaques-title">Por que começar agora?</div>
+      <div class="destaque-item">
+        <div class="destaque-check">✓</div>
+        <div class="destaque-text">
+          <strong>Qualquer idade</strong>
+          Crianças a partir de 5 anos e adultos de qualquer faixa etária podem aprender. Nunca é cedo ou tarde demais.
+        </div>
+      </div>
+      <div class="destaque-item">
+        <div class="destaque-check">✓</div>
+        <div class="destaque-text">
+          <strong>Evolução contínua</strong>
+          O skate não tem teto. Sempre há uma nova manobra, técnica ou estilo para explorar — a evolução nunca para.
+        </div>
+      </div>
+      <div class="destaque-item">
+        <div class="destaque-check">✓</div>
+        <div class="destaque-text">
+          <strong>Disciplina que muda a rotina</strong>
+          Uma ou duas sessões por semana já produzem impactos reais na saúde física, mental e no humor diário.
+        </div>
+      </div>
+      <div class="destaque-item">
+        <div class="destaque-check">✓</div>
+        <div class="destaque-text">
+          <strong>Habilidades para a vida</strong>
+          Resiliência, foco, criatividade e autoconfiança — o que você aprende no skate, leva para sempre.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTATO -->
 <section id="contato">
   <div class="contato-wrap">
@@ -696,6 +934,19 @@ Durante as aulas, o aluno também terá contato com diversas outras técnicas e 
 </footer>
 
 <script>
+  // Filtro de benefícios
+  function filtrarBeneficios(grupo, btn) {
+    document.querySelectorAll('.beneficio-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.beneficio-card[data-grupo]').forEach(card => {
+      if (grupo === 'todos' || card.dataset.grupo === grupo) {
+        card.classList.add('visivel');
+      } else {
+        card.classList.remove('visivel');
+      }
+    });
+  }
+
   // Custom cursor
   const cursor = document.getElementById('cursor');
   document.addEventListener('mousemove', e => {
